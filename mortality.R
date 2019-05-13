@@ -60,7 +60,7 @@ boxplot(mortsDeterminee$detail_age ~ mortsDeterminee$manner_of_death,
 #Changer l'ordonnée, en changeant peut-être le dataset
 
 
-cleandata=subset(data,select=c(3,5,6,8,19,22,71))
+cleanData=subset(data,select=c(3,5,6,8,19,22,71))
 
 #Colonne 3 = niveau d'éducation  data$education_2003_revision
 #Colonne 5 = Mois de la mort
@@ -70,7 +70,23 @@ cleandata=subset(data,select=c(3,5,6,8,19,22,71))
 #Colonne 22 = Activités (pas toujours remplit)
 #Colonne 71 = Origines
 
-str(cleandata)
+str(cleanData)
+
+cleanData$month_of_death=as.factor(cleanData$month_of_death)
+cleanData$race=as.factor(cleanData$race)
+cleanData$manner_of_death=as.factor(cleanData$manner_of_death)
+cleanData$activity_code=as.factor(cleanData$activity_code)
+cleanData$education_2003_revision=as.factor(cleanData$education_2003_revision)
+
+attach(cleanData)
+
+library(rpart)
+arbre=rpart(race~.,cleanData)
+
+#print(arbre)
+
+library(rpart.plot)
+rpart.plot(arbre,type=4)
 
 #On va plutôt essayer de tirer des choses de ce nouveau dataset, plus condensé et moins bordélique
 
